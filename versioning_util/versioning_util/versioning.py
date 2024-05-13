@@ -5,7 +5,7 @@ class Version_Util:
     def __init__(self) -> None:
         self.version = None
         
-def _get_version_from_setup(self):
+def get_version_from_setup(self):
     # Path to parent directory
     parent_dir = os.path.dirname(os.path.relpath(__file__))
     
