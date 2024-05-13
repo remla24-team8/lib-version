@@ -8,3 +8,23 @@ A version-aware library that can can be asked for the version of the library. Th
 • The library is versioned automatically, e.g., by picking-up on the corresponding Git version tag.
 
 • A workflow is used to automatically release the library in a package registry that matches the language.(As stated before, this includes either supported package registries on GitHub or repository tags in languages that support it.)
+
+## Installation
+The package is avaiable on pypi and can be installed directly using:
+
+```shell
+pip install versioning-remla
+```
+
+## Usage
+
+To get the current version include the following lines:
+
+```python
+from versioning_util.versioning import Version_Util
+util = VersionUtil()
+print(util.get_version_from_setup())
+```
+
+
+
