@@ -1,0 +1,70 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  release:
+    types: [ published ]
+
+jobs:
+  build-test:
+    name: Build-Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+          py-version: ['3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Poetry
+        run: pipx install poetry==1.8.3
+      - name: Setting up Python
+        id: setup-py
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.py-version }}
+          cache: 'poetry'
+      - name: Poetry install dependencies
+        run: |
+          poetry env use '${{ steps.setup-py.outputs.python-path }}'
+          poetry install --sync --no-root
+      - name: Install project
+        run: poetry install --only-root
+      - name: Test
+        run: poetry run pytest
+      - name: Install semver
+        if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+        run: pipx install semver
+      - name: Check if tag starts with 'v'
+        if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+        run: |
+          [[ ${{ github.event.release.tag_name }} == v* ]]
+      - name: Check if semver and if it matches
+        if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+        run: |
+          OUTPUT="${TAG#v}"
+          pysemver check "$OUTPUT"
+          [[ $(poetry version -s) == OUTPUT ]]
+      - name: Build
+        run: poetry build
+      - name: Upload artifact
+        if: ${{ matrix.py-version == '3.12' && github.event_name == 'release' && github.event.action == 'published' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: ${{ github.workspace }}/dist/
+          if-no-files-found: error
+  publish:
+    needs: [build-test]
+    name: Publish
+    if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: dist
+        path: ${{ github.workspace }}/dist/
+    - name: PyPI release
+      uses: pypa/gh-action-pypi-publish@release/v1
