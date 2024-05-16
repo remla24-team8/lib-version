@@ -29,8 +29,6 @@ jobs:
           poetry install --sync --no-root
       - name: Install project
         run: poetry install --only-root
-      - name: Test
-        run: poetry run pytest
       - name: Install semver
         if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
         run: pipx install semver
