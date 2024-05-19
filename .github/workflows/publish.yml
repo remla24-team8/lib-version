@@ -39,9 +39,10 @@ jobs:
       - name: Check if semver and if it matches
         if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
         run: |
+          TAG=${{ github.event.release.tag_name }}
           OUTPUT="${TAG#v}"
           pysemver check "$OUTPUT"
-          [[ $(poetry version -s) == OUTPUT ]]
+          [[ $(poetry version -s) == $OUTPUT ]]
       - name: Build
         run: poetry build
       - name: Upload artifact
