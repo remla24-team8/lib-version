@@ -13,7 +13,7 @@ A version-aware library that can can be asked for the version of the library. Th
 The package is avaiable on pypi and can be installed directly using:
 
 ```shell
-pip install versioning-remla
+pip install remla24-team8-lib-version
 ```
 
 ## Usage
