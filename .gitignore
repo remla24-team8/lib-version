@@ -1,7 +1,6 @@
 # Files created by installing setup.py
 build/
 dist/
-lib_version
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
