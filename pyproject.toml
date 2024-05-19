@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "remla24-team8-lib-version"
-version = "0.3.0"
-description = ""
+version = "0.3.1"
+description = "A version-aware library that can can be asked for the version of the library"
 authors = [
     "Tip ten Brink <T.M.tenBrink@student.tudelft.nl>", 
     "Felipe Bononi Bello <bello2001felipe@gmail.com>", 
@@ -14,7 +14,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.12"
 importlib-resources = "^6.4.0"
 
 [build-system]
