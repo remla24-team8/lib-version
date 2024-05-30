@@ -21,9 +21,9 @@ pip install remla24-team8-lib-version
 To get the current version include the following lines:
 
 ```python
-from lib_version import Version_Util
-util = VersionUtil()
-print(util.get_version_from_setup())
+from remla24_team8_lib_version import versioning
+
+print(versioning.get_version())
 ```
 
 
