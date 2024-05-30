@@ -14,7 +14,7 @@ readme = "README.md"
 python = "^3.12"
 
 [tool.poetry.scripts]
-get_version = "remla24_team8_lib_version.versioning:get_version"
+get_version = "remla24_team8_lib_version.versioning:VersionUtil.get_version"
 
 [build-system]
 requires = ["poetry-core"]
