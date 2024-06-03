@@ -23,8 +23,11 @@ To get the current version include the following lines:
 ```python
 from remla24_team8_lib_version import versioning
 
-print(versioning.get_version())
+print(versioning.VersionUtil().version)
 ```
+or from command-line
 
-
+```bash
+python3 -m remla24_team8_lib_version
+```
 
