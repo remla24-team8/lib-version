@@ -8,8 +8,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: chartboost/ruff-action@v1
-  build-test:
-    name: Build-Test
+  pylint:
+    name: Linting
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -28,11 +28,15 @@ jobs:
         run: |
           poetry env use '${{ steps.setup-py.outputs.python-path }}'
           poetry install --sync --no-root
-      - name: Install project
-        run: poetry install --only-root
-      - name: Run pylint
+      - name: Install project and pylint
+        run: |
+          poetry install --only-root
+          poetry add pylint
+          poetry add black
+      - name: Run pylint and black
         run: |
           poetry run pylint src/ --fail-under=10.0
+          poetry run black src/ --check
 
       - name: Archive pylint results
         if: always()
