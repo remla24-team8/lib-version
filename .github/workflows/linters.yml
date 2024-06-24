@@ -1,0 +1,47 @@
+name: linters
+on: [push, pull_request]
+
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: chartboost/ruff-action@v1
+  pylint:
+    name: Linting
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+          py-version: ['3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Poetry
+        run: pipx install poetry==1.8.3
+      - name: Setting up Python
+        id: setup-py
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.py-version }}
+          cache: 'poetry'
+      - name: Poetry install dependencies
+        run: |
+          poetry env use '${{ steps.setup-py.outputs.python-path }}'
+          poetry install --sync --no-root
+      - name: Install project and pylint
+        run: |
+          poetry install --only-root
+          poetry add pylint
+          poetry add black
+      - name: Run pylint and black
+        run: |
+          poetry run pylint src/ --fail-under=8.0 --output=pylint.log
+          poetry run black src/ --check
+
+      - name: Archive pylint results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: pylint-results
+          path: pylint.log
+      
