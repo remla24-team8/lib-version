@@ -1,9 +1,12 @@
 """ This module provides utility methods for retrieving the version of the library. """
+
 import os
 import requests
 
+
 class VersionUtil:
     """Provides utility methods for retrieving the version of the library."""
+
     def __init__(self):
         """
         Initializes a new instance of the VersionUtil class.
@@ -21,7 +24,7 @@ class VersionUtil:
         current_dir = os.path.dirname(os.path.realpath(__file__))
         pyproject_toml = os.path.join(current_dir, "..", "..", "pyproject.toml")
         if os.path.exists(pyproject_toml):
-            with open(pyproject_toml, "r", encoding='UTF-8') as f:
+            with open(pyproject_toml, "r", encoding="UTF-8") as f:
                 for line in f:
                     if "version = " in line:
                         version = line.split("=")[1].strip().replace('"', "")
@@ -29,7 +32,7 @@ class VersionUtil:
         else:
             return VersionUtil.get_version_from_gh()
         return "0.0.0"
-    
+
     @staticmethod
     def get_version_from_gh():
         """

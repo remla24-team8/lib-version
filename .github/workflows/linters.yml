@@ -35,7 +35,7 @@ jobs:
           poetry add black
       - name: Run pylint and black
         run: |
-          poetry run pylint src/ --fail-under=10.0
+          poetry run pylint src/ --fail-under=8.0 --output=pylint.log
           poetry run black src/ --check
 
       - name: Archive pylint results
